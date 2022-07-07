@@ -7,7 +7,9 @@ client.login(config.BOT_TOKEN);
 
 
 client.on('ready', () => {
-  setInterval(checkRelease, 10000);
+  setInterval(async function () {
+    await releases.getLatestRelease(client)
+  }, 10000);
 })
 
 const prefix = "!";
@@ -30,12 +32,12 @@ client.on("messageCreate", async function(message) {
 async function checkRelease() {
   try {
     var release = await releases.getLatestRelease();
-    console.log(release)
   } catch(err) {
       console.error(err);
   }
   if(release != ""){
     const channel = client.channels.cache.get('992132358381781133');
+    channel.send("Baixe aqui: "+release.url);
   }
 }
 
